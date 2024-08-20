@@ -5,11 +5,17 @@ sealed class OurResult<out T> {
     data class Error(val error: Throwable?) : OurResult<Nothing>()
 }
 
-fun <T> OurResult<T>.valueOr(alternative: (OurResult.Error) -> T) :T {
+inline fun <T> OurResult<T>.valueOr(alternative: (OurResult.Error) -> T) :T {
     return when(this) {
         is OurResult.Error -> alternative(this)
         is OurResult.Success -> value
     }
+}
+
+fun main() {
+    val httpResponse = httpRequest().valueOr { return }
+    httpResponse.length
+    println(httpResponse)
 }
 
 fun foo(): String {
