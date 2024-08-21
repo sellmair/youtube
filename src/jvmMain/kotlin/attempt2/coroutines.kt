@@ -37,14 +37,14 @@ suspend fun run(args: Array<String>) {
 }
 
 
-object MainDispatcher : Dispatcher {
+private object MainDispatcher : Dispatcher {
 
     override fun dispatch(block: () -> Unit) {
         mainQueue.offer { block() }
     }
 }
 
-object BackgroundDispatcher : Dispatcher {
+private object BackgroundDispatcher : Dispatcher {
     private val nextThreadId = AtomicInteger(0)
     private val backgroundThreads = Executors.newFixedThreadPool(4) { runnable ->
         thread(
@@ -60,7 +60,7 @@ object BackgroundDispatcher : Dispatcher {
     }
 }
 
-interface Dispatcher : CoroutineContext.Element {
+private interface Dispatcher : CoroutineContext.Element {
 
     fun dispatch(block: () -> Unit)
     override val key: CoroutineContext.Key<Dispatcher> get() = Key
@@ -68,11 +68,11 @@ interface Dispatcher : CoroutineContext.Element {
     companion object Key : CoroutineContext.Key<Dispatcher>
 }
 
-suspend fun <T> withBackgroundThread(block: suspend () -> T): T {
+private suspend fun <T> withBackgroundThread(block: suspend () -> T): T {
     return withContext(BackgroundDispatcher) { block() }
 }
 
-suspend fun <T> withContext(context: CoroutineContext, action: suspend () -> T): T {
+private suspend fun <T> withContext(context: CoroutineContext, action: suspend () -> T): T {
 
     return suspendCoroutine<T> { outerContinuation ->
         val newContext = outerContinuation.context + context
