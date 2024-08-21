@@ -3,8 +3,9 @@ import java.util.concurrent.TimeUnit
 import kotlin.coroutines.*
 
 fun main() {
-    val coroutine = ::async.createCoroutine(Continuation(EmptyCoroutineContext) { result -> result.getOrThrow() })
-    coroutine.resume(Unit)
+    val coroutine = ::async.createCoroutine(Continuation(MainDispatcher) { result -> result.getOrThrow() })
+    MainDispatcher.dispatch {  coroutine.resume(Unit) }
+    MainDispatcher.loop()
 }
 
 suspend fun async() {
@@ -31,5 +32,4 @@ object MainDispatcher : Dispatcher {
             queue.poll(1, TimeUnit.SECONDS)?.invoke() ?: return
         }
     }
-
 }
