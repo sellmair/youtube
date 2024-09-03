@@ -4,7 +4,7 @@ import androidx.compose.ui.test.*
 import io.sellmair.evas.Events
 import io.sellmair.evas.States
 import io.sellmair.evas.compose.installEvas
-import io.sellmair.jokes.CurrentJokeState
+import io.sellmair.jokes._CurrentJokeState
 import io.sellmair.jokes.ui.MainPage
 import io.sellmair.jokes.ui.UiTags
 import kotlin.test.Test
@@ -24,11 +24,11 @@ class JokeLoadingUiTest {
         }
 
 
-        states.setState(CurrentJokeState, CurrentJokeState.Loading)
+        states.setState(_CurrentJokeState, _CurrentJokeState.Loading)
         onNodeWithTag(UiTags.JokeLoadingSpinner.name).assertExists()
         onNodeWithTag(UiTags.JokeText.name).assertDoesNotExist()
 
-        states.setState(CurrentJokeState, CurrentJokeState.Joke("Fantastic Joke!"))
+        states.setState(_CurrentJokeState, _CurrentJokeState.Joke("Fantastic Joke!"))
         onNodeWithTag(UiTags.JokeLoadingSpinner.name).assertDoesNotExist()
         onNodeWithTag(UiTags.JokeText.name).assertExists().assertTextEquals("Fantastic Joke!")
     }
@@ -44,12 +44,12 @@ class JokeLoadingUiTest {
             }
         }
 
-        states.setState(CurrentJokeState, CurrentJokeState.Loading)
+        states.setState(_CurrentJokeState, _CurrentJokeState.Loading)
         onNodeWithTag(UiTags.JokeLoadingSpinner.name).assertExists()
         onNodeWithTag(UiTags.JokeText.name).assertDoesNotExist()
         onNodeWithTag(UiTags.JokeErrorText.name).assertDoesNotExist()
 
-        states.setState(CurrentJokeState, CurrentJokeState.Error("Sad Error"))
+        states.setState(_CurrentJokeState, _CurrentJokeState.Error("Sad Error"))
         onNodeWithTag(UiTags.JokeLoadingSpinner.name).assertDoesNotExist()
         onNodeWithTag(UiTags.JokeText.name).assertDoesNotExist()
         onNodeWithTag(UiTags.JokeErrorText.name).assertExists().assertTextContains("Error: Sad Error")

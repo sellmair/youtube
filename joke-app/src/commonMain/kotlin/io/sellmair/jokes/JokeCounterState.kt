@@ -14,8 +14,8 @@ data class JokeCounterState(val jokesCount: Int) : State {
 fun CoroutineScope.launchJokeCounterState() = launchState(JokeCounterState) {
     var state = JokeCounterState.default
 
-    CurrentJokeState.collect { currentJokeState ->
-        if (currentJokeState is CurrentJokeState.Joke) {
+    _CurrentJokeState.collect { currentJokeState ->
+        if (currentJokeState is _CurrentJokeState.Joke) {
             state = state.copy(jokesCount = state.jokesCount + 1)
             state.emit()
         }

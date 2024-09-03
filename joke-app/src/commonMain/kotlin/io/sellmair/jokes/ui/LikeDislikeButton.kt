@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.testTag
 import io.sellmair.evas.compose.EvasLaunching
 import io.sellmair.evas.compose.composeValue
 import io.sellmair.evas.emit
-import io.sellmair.jokes.CurrentJokeState
+import io.sellmair.jokes._CurrentJokeState
 import io.sellmair.jokes.LikeDislikeEvent
 
 
@@ -18,11 +18,11 @@ fun LikeDislikeButton(
     rating: LikeDislikeEvent.Rating,
     content: @Composable () -> Unit
 ) {
-    val currentJokeState = CurrentJokeState.composeValue()
+    val currentJokeState = _CurrentJokeState.composeValue()
 
     Button(
         /* Do not enable the button if there is no joke loaded */
-        enabled = currentJokeState is CurrentJokeState.Joke,
+        enabled = currentJokeState is _CurrentJokeState.Joke,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = when (rating) {
                 LikeDislikeEvent.Rating.Like -> Color.Green

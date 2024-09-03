@@ -5,7 +5,7 @@ import io.sellmair.evas.Events
 import io.sellmair.evas.States
 import io.sellmair.evas.collectEvents
 import io.sellmair.evas.compose.installEvas
-import io.sellmair.jokes.CurrentJokeState
+import io.sellmair.jokes._CurrentJokeState
 import io.sellmair.jokes.LikeDislikeEvent
 import io.sellmair.jokes.LikeDislikeEvent.Rating.Dislike
 import io.sellmair.jokes.LikeDislikeEvent.Rating.Like
@@ -32,17 +32,17 @@ class LikeDislikeUiTest {
         onNodeWithTag(UiTags.DislikeButton.name).assertExists().assertIsNotEnabled()
 
         /* Set the current joke state to 'Loading' -> Still disabled */
-        states.setState(CurrentJokeState, CurrentJokeState.Loading)
+        states.setState(_CurrentJokeState, _CurrentJokeState.Loading)
         onNodeWithTag(UiTags.LikeButton.name).assertExists().assertIsNotEnabled()
         onNodeWithTag(UiTags.DislikeButton.name).assertExists().assertIsNotEnabled()
 
         /* Set the current joke state to 'Joke' -> enabled */
-        states.setState(CurrentJokeState, CurrentJokeState.Joke("Some Joke"))
+        states.setState(_CurrentJokeState, _CurrentJokeState.Joke("Some Joke"))
         onNodeWithTag(UiTags.LikeButton.name).assertExists().assertIsEnabled()
         onNodeWithTag(UiTags.DislikeButton.name).assertExists().assertIsEnabled()
 
         /* Set the current joke state to 'Error' -> disabled */
-        states.setState(CurrentJokeState, CurrentJokeState.Error("Some Error"))
+        states.setState(_CurrentJokeState, _CurrentJokeState.Error("Some Error"))
         onNodeWithTag(UiTags.LikeButton.name).assertExists().assertIsNotEnabled()
         onNodeWithTag(UiTags.DislikeButton.name).assertExists().assertIsNotEnabled()
     }
@@ -60,7 +60,7 @@ class LikeDislikeUiTest {
         }
 
         /* Like, Dislike Buttons are only enabled if a joke is available */
-        states.setState(CurrentJokeState, CurrentJokeState.Joke("Fantastic Joke!"))
+        states.setState(_CurrentJokeState, _CurrentJokeState.Joke("Fantastic Joke!"))
 
         runBlocking(events + states) {
             /*

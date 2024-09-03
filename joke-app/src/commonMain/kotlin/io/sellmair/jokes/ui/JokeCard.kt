@@ -14,11 +14,8 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.sellmair.evas.compose.composeFlow
 import io.sellmair.evas.compose.composeValue
-import io.sellmair.evas.flow
-import io.sellmair.evas.value
-import io.sellmair.jokes.CurrentJokeState
+import io.sellmair.jokes._CurrentJokeState
 
 @Composable
 fun JokeCard(modifier: Modifier = Modifier) {
@@ -32,17 +29,17 @@ fun JokeCard(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(12.dp),
             contentAlignment = Alignment.Center
         ) {
-            when (val currentJokeState = CurrentJokeState.composeValue()) {
-                is CurrentJokeState.Error -> Text(
+            when (val currentJokeState = _CurrentJokeState.composeValue()) {
+                is _CurrentJokeState.Error -> Text(
                     "Error: ${currentJokeState.message}",
                     Modifier.testTag(UiTags.JokeErrorText.name),
                 )
 
-                is CurrentJokeState.Loading -> CircularProgressIndicator(
+                is _CurrentJokeState.Loading -> CircularProgressIndicator(
                     Modifier.testTag(UiTags.JokeLoadingSpinner.name)
                 )
 
-                is CurrentJokeState.Joke -> Text(
+                is _CurrentJokeState.Joke -> Text(
                     currentJokeState.joke,
                     fontStyle = FontStyle.Italic,
                     fontWeight = FontWeight.Light,

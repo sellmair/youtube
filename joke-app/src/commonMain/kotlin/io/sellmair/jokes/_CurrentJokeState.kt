@@ -11,30 +11,30 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.conflate
 
-sealed class CurrentJokeState : State {
-    companion object Key : State.Key<CurrentJokeState?> {
-        override val default: CurrentJokeState? = null
+sealed class _CurrentJokeState : State {
+    companion object Key : State.Key<_CurrentJokeState?> {
+        override val default: _CurrentJokeState? = null
     }
 
-    data object Loading : CurrentJokeState()
-    data class Error(val message: String) : CurrentJokeState()
-    data class Joke(val joke: String) : CurrentJokeState()
+    data object Loading : _CurrentJokeState()
+    data class Error(val message: String) : _CurrentJokeState()
+    data class Joke(val joke: String) : _CurrentJokeState()
 }
 
-fun CoroutineScope.launchJokeLoadingState(): Job = launchState(CurrentJokeState) {
+fun CoroutineScope.launchJokeLoadingState(): Job = launchState(_CurrentJokeState) {
     suspend fun loadJoke() {
-        CurrentJokeState.Loading.emit()
+        _CurrentJokeState.Loading.emit()
 
         val response = httpClient.get("https://icanhazdadjoke.com/") {
             accept(ContentType.Text.Plain)
         }
 
         if (!response.status.isSuccess()) {
-            CurrentJokeState.Error(response.status.description + ": ${response.bodyAsText()}").emit()
+            _CurrentJokeState.Error(response.status.description + ": ${response.bodyAsText()}").emit()
             return
         }
 
-        CurrentJokeState.Joke(response.bodyAsText()).emit()
+        _CurrentJokeState.Joke(response.bodyAsText()).emit()
     }
 
     /* Load the first initial joke immediately */

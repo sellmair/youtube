@@ -159,3 +159,7 @@ I am doing 'freestyle MVI' now, which basically just defines independent Events 
 All the boiler-plate, wire-up logic was extracted to a Library I call 'Evas' (Events and States). 
 Let me show an example and encourage you to build something you can call 'your own'.
 
+
+After all that ranting, let's build an App, fetching and then displaying jokes from a free 
+rest api. To demonstrate the issue from the beginning, we would like to launch our network request
+only if there is any UI consumer that actually desires a joke to be displayed.
