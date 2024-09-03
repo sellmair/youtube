@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm") version "2.0.20"
-    kotlin("plugin.compose") version "2.0.20"
+    kotlin("jvm")
+    kotlin("plugin.compose")
+    id("com.android.application") apply false
 }
 
 dependencies {
