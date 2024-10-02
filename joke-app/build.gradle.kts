@@ -24,8 +24,8 @@ kotlin {
     /* Dependencies */
     val ktorClientVersion = "2.3.12"
     sourceSets.commonMain.dependencies {
-        implementation("io.sellmair:evas:1.0.0-RC")
-        implementation("io.sellmair:evas-compose:1.0.0-RC")
+        implementation("io.sellmair:evas:1.0.0-RC.2-SNAPSHOT")
+        implementation("io.sellmair:evas-compose:1.0.0-RC.2-SNAPSHOT")
 
         implementation(compose.ui)
         implementation(compose.foundation)
