@@ -39,4 +39,10 @@ We have done one of many possible mistakes when measuring performance!
 There is a lot going on when launching a fresh JVM. Let's give the JIT some time to 'warm up' and optimize this
 code before we start measuring this.
 
-But let's face it! The 1.6ms we see now is still not close to the
+But still: The warm 'forEach' results in 1.6ms, but we have seen the for-loop performing significantly faster
+at 1.2ms. I might have one or two more ideas why our initial measurements
+showed these results: Maybe the JIT compiler optimized the empty loops? Maybe the .forEach call did some unboxing
+of Int where the empty for loop did not? Getting performance measurements right is a science, which gets me 
+to the main point of this video: 
+
+Use a benchmarking framework!! We can use kotlinx.benchmark to do the heavy lifting
