@@ -10,3 +10,4 @@ dependencies {
 benchmark {
     targets.create("main")
 }
+
