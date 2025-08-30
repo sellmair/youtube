@@ -1,0 +1,86 @@
+Notes:
+
+Show How we can use SKIKO (SKIA) to do some high performance image processsing!
+-> Show an image diff algorithm.
+
+# Intro
+Compose is a wonderful technology and some say its much more than just an UI framework.
+But did you know that SKIA (or SKIKO, the Kotlin Bindings to SKIA) can be used
+outside of Compose as well?
+
+I recently fell in love with skiko and used it to build some high performance
+image processing and you might have fun with it as well!
+
+Let's start with an empty Kotlin project.
+Using skiko requires two dependencies:
+The 'skiko-awt' and the platform dependent 'awt-runtime'.
+
+Yes, klibs.io shows us that we might want to copy/paste this snippet to
+automatically get the platform, but this is just a YT video, so let me keep it
+simple and just add the macos dependency for now.
+
+We can sync the IDE and get started.
+Here is what we're trying to build:
+Let's build a screenshot comparison tool! We can produce two screenshots from
+the Kotlin Conf app. Let's just change the speakers name typography for now!
+
+We now have two screenshots:
+'before' & and 'after' and we would like to build a tool which identifies
+all parts of the image which are different and we want this to be f*in fast, right?
+
+
+We create a 'imageCompare' Kotlin file and quickly define a run task to execute our code.
+
+It's easy to read the 'before' and 'after' resources, but let me show you
+how to create a 'Skia' Image.
+
+We first create a 'Codec' from the ByteArray!
+Then we can allocate a new Bitmap with the width and height of our pixels.
+The N32 part, btw is the default color format which stores the pixel values as
+'BGRA_8888'
+
+We can read the pixels into this bitmap and then wrap the bitmap as Image!
+
+If we provide an additional conversion function from 'Image' to Javas 'BufferedImage',
+then we even have a convenient tool for viewing images in IntelliJ!
+
+
+But, how can we now use this to our advantage for high performance computations?
+Let me show you how we could use a 'shader' to compare these images effeciently!
+
+We create a new 'compare' function, taking both Images as input parameters,
+returning our comparison image!
+
+A shader has to be written in a special shader language called GLSL,
+(Skia uses a dialect called SKSL!)
+
+Our input images will be passed through as shaders themselves
+we delcare them using the 'uniform' keyword (making them available for each compuation).
+
+We then have to declare our shader main function which
+gets the coordintes for a given pixel it should compute.
+
+In our simple case we can get the color value if
+image a at x,y coordinates and the color value of b
+and then return the absolute difference between those colors
+
+In order to create our 'diff image',
+we can use the 'RuntimeShaderBuilder' and use the  'RuntimeEffect.makeForShader'
+to compile our shader code.
+
+We then provide the input images,
+create a result bitmap and allocate the pixels.
+
+We add the shader to a paint object and draw it to canvas,
+then returning the bitmap.
+
+Let's call our method and look at the result!
+And as expected: we see exactly those parts of the screenshot which differ!
+
+This concept can be extended to many use cases:
+If its 'edge detection', using custom Kernels or other algorithms.
+
+If you want to use it to build fancy effects in your apps, then maybe
+you want to checkout this blogpost 'is it vaporwave' from Maya.
+
+Hope you enjoy Skiko; Have fun with Kotlin!
