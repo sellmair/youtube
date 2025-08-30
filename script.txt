@@ -1,0 +1,82 @@
+Raw Structure:
+
+Intro:
+    - Cool Compiler
+    - I got this iOS and Android codebase
+
+Problem Statement:
+    - Adding one more target is hard
+    - Libraries: All or nothing
+    - Application/Dev target: Lots of mocking
+
+Showcase Lenient Mode
+    - Add jvm target
+    - Create main.kt
+    - Show obvious compilation errors
+    - Enable lenient mode
+    - Run App
+    - Hot Reload the platform
+
+
+# Title
+Chill Compiler, Chill 🤙
+
+# Thumbnail
+The coolest compiler argument.
+
+Intro
+The Kotlin Team at JetBrains is already pretty cool, but did you know that
+there is a way to make the Kotlin Compiler cool as well?
+
+If you like the language, you probably like all of its safety features and you
+know the compiler is pretty strict about it.
+
+I know that what I am going to say next will sound wrong, but hear me out: I'll explain.
+Sometimes, just sometimes, there are situations where you would like your compiler
+to stop acting like a toddler getting denied a candy bar during grocery shopping
+and chill out a little bit.
+
+Sure thing, buddy:
+I did not provide an actual for all of my expect functions,
+Yes, this method call here does not resolve to anything,
+and yes, my return type here is not correct.
+
+but can we please run the part of our code that is green?
+
+Now at this point you probably think:
+Is Seb going mad? Why would I ever want to run code which does not fully compile
+(And madness is probably around the corner, reading some of my recent code comments),
+but I am not mad yet, I hope).
+
+###
+Let's say you have a rather large project, targeting multiple platforms (iOS, Android, maybe wasm).
+Likely you do have a bunch of expect functions in your common sources. Let's say you do have 1000 of them (as I said, large!)
+At some point you might decide to support one more platform (e.g. the jvm).
+Almost every Kotlin Library author knows the pain now: Adding a new target is a 'all or nothing' kind of situation.
+You cannot simply start implementing one expect function after another and use the existing tests to verify
+if your implementation is correct. Why? Because your code does not compile, why? Because you still have 999 other
+expects to declare: As I said: All or nothing!
+
+But recently we see more and more application developers ending up in a similar situation:
+They might want to run their code on the JVM for quick development loops (e.g. by using Compose Hot Reload).
+But again, adding the jvm as a target is a 'all or nothing' operation and can be quite painful.
+
+
+
+##
+Let's look at this very simplified example app:
+It currently compiles for Android and iOS and scans for bluetooth devices nearby.
+Since it uses Compose, I might want to target the JVM as well in order to use Compose Hot Reload!
+
+We can add the target, create a main function, press run and we're not surprised:
+There are two expect functions in this example: 'platform' and the underlying bluetooth implementation 'scanBluetooth'
+Again: Real Life projects might have a lot of those expect functions and our compiler rightfully complains
+about us not providing all implementations.
+
+Now, @Kirill and me from the Kotlin team, would like to share a new experimental compiler flag with you,
+which will 'cool down' the compiler a little bit and runs it in 'lenient mode':
+--XXlenient-mode
+
+When the compiler is invoked now with this lenientMode we can try launching the code on the JVM again,
+still not providing the actuals, and the APP launches! The compiler automatically provided stubs for our expects,
+this way we can
