@@ -2,13 +2,7 @@ plugins {
     kotlin("jvm") version "2.2.10"
 }
 
-kotlin {
-    compilerOptions {
-        //freeCompilerArgs.add("-Xdebug")
-    }
-}
-
-tasks.register("run", JavaExec::class) {
+tasks.register<JavaExec>("run") {
     mainClass.set("ImageCompareKt")
     classpath = sourceSets["main"].runtimeClasspath
 }
